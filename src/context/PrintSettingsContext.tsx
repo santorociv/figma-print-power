@@ -44,9 +44,19 @@ interface PrintSettings {
   compressionQuality: number;
 }
 
+interface SavedPreset {
+  id: string;
+  name: string;
+  settings: Partial<PrintSettings>;
+}
+
 interface PrintSettingsContextType {
   settings: PrintSettings;
   updateSettings: (newSettings: Partial<PrintSettings>) => void;
+  userPresets: SavedPreset[];
+  addPreset: (name: string, settings: Partial<PrintSettings>) => void;
+  removePreset: (id: string) => void;
+  loadPreset: (preset: SavedPreset) => void;
 }
 
 const defaultSettings: PrintSettings = {
@@ -81,13 +91,39 @@ const PrintSettingsContext = createContext<PrintSettingsContextType | undefined>
 
 export const PrintSettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [settings, setSettings] = useState<PrintSettings>(defaultSettings);
+  const [userPresets, setUserPresets] = useState<SavedPreset[]>([]);
 
   const updateSettings = (newSettings: Partial<PrintSettings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
 
+  const addPreset = (name: string, presetSettings: Partial<PrintSettings>) => {
+    const newPreset: SavedPreset = {
+      id: Date.now().toString(),
+      name,
+      settings: presetSettings,
+    };
+    setUserPresets(prev => [newPreset, ...prev]);
+    return newPreset;
+  };
+
+  const removePreset = (id: string) => {
+    setUserPresets(prev => prev.filter(preset => preset.id !== id));
+  };
+
+  const loadPreset = (preset: SavedPreset) => {
+    updateSettings(preset.settings);
+  };
+
   return (
-    <PrintSettingsContext.Provider value={{ settings, updateSettings }}>
+    <PrintSettingsContext.Provider value={{ 
+      settings, 
+      updateSettings, 
+      userPresets, 
+      addPreset, 
+      removePreset, 
+      loadPreset 
+    }}>
       {children}
     </PrintSettingsContext.Provider>
   );
