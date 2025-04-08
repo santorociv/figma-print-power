@@ -9,12 +9,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { usePrintSettings } from "@/context/PrintSettingsContext";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Printer, Info } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ColorSettings = () => {
   const { settings, updateSettings } = usePrintSettings();
+
+  // Common DPI presets with descriptions
+  const dpiPresets = [
+    { value: 72, label: "72 DPI", description: "Screen viewing only (web/digital)" },
+    { value: 150, label: "150 DPI", description: "Draft printing, internal documents" },
+    { value: 300, label: "300 DPI", description: "Standard commercial printing" },
+    { value: 450, label: "450 DPI", description: "High-quality commercial printing" },
+    { value: 600, label: "600 DPI", description: "Fine art and detailed printing" },
+  ];
 
   // Function to provide a human-readable description for each color profile
   const getProfileDescription = (profile: string) => {
@@ -94,47 +106,56 @@ const ColorSettings = () => {
             </p>
           </div>
 
-          {/* DPI/Resolution Setting */}
+          {/* DPI/Resolution Setting with Presets */}
           <div className="space-y-2 pt-4 border-t">
-            <div className="flex justify-between">
-              <Label htmlFor="dpi">Resolution (DPI)</Label>
-              <span className="text-sm text-gray-500">{settings.dpi} DPI</span>
+            <Label htmlFor="dpi">Resolution (DPI)</Label>
+            
+            {/* DPI Preset Buttons */}
+            <div className="grid grid-cols-5 gap-2 mb-3">
+              {dpiPresets.map((preset) => (
+                <Button
+                  key={preset.value}
+                  type="button"
+                  variant={settings.dpi === preset.value ? "default" : "outline"}
+                  className="h-10 px-2 py-1 text-xs"
+                  onClick={() => updateSettings({ dpi: preset.value })}
+                >
+                  {preset.label}
+                </Button>
+              ))}
             </div>
-            <div className="flex items-center gap-2">
-              <Slider
-                id="dpi"
-                min={72}
-                max={600}
-                step={1}
-                value={[settings.dpi]}
-                onValueChange={(value) => updateSettings({ dpi: value[0] })}
-                className="flex-1"
-              />
+            
+            {/* Custom DPI Input */}
+            <div className="flex items-center gap-3">
+              <Label htmlFor="custom-dpi" className="whitespace-nowrap text-sm">Custom DPI:</Label>
               <Input
+                id="custom-dpi"
                 type="number"
                 value={settings.dpi}
                 onChange={(e) => updateSettings({ dpi: Number(e.target.value) })}
-                className="w-16"
+                className="w-24"
                 min={72}
-                max={600}
+                max={1200}
                 step={1}
               />
             </div>
-            <div className="grid grid-cols-4 text-xs text-gray-500 mt-1">
-              <span>72dpi</span>
-              <span className="text-center">150dpi</span>
-              <span className="text-center">300dpi</span>
-              <span className="text-right">600dpi</span>
+            
+            {/* DPI Info */}
+            <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-md flex items-start gap-2">
+              <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-blue-700 mb-1">Current: {settings.dpi} DPI</p>
+                <p className="text-xs text-blue-600">
+                  {settings.dpi < 150
+                    ? 'Low resolution suitable for screen viewing only'
+                    : settings.dpi < 300
+                    ? 'Medium resolution suitable for draft printing'
+                    : settings.dpi <= 450
+                    ? 'High quality suitable for commercial printing'
+                    : 'Very high resolution for detailed commercial printing'}
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              {settings.dpi < 150
-                ? 'Low resolution suitable for screen viewing only'
-                : settings.dpi < 300
-                ? 'Medium resolution suitable for draft printing'
-                : settings.dpi <= 450
-                ? 'High quality suitable for commercial printing'
-                : 'Very high resolution for detailed commercial printing'}
-            </p>
           </div>
         </div>
       </div>

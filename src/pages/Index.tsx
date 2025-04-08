@@ -8,6 +8,7 @@ import ExportOptions from "@/components/ExportOptions";
 import PreviewPanel from "@/components/PreviewPanel";
 import { PrintSettingsProvider } from "@/context/PrintSettingsContext";
 import { Printer, Layers, Palette, Download } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("page-settings");
@@ -19,16 +20,16 @@ const Index = () => {
           <div className="max-w-7xl mx-auto w-full">
             <h1 className="text-2xl font-bold text-gray-900 flex items-center">
               <Printer className="w-6 h-6 mr-2 text-figma-blue" />
-              Print Power
+              Figma to Print
             </h1>
             <p className="text-sm text-gray-500 mt-1">
-              Professional print export tools for Figma designs
+              Layout design tool to manage your printable edits from figma
             </p>
           </div>
         </header>
 
         <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-6 gap-6">
-          <div className="md:w-1/3 space-y-6">
+          <div className="md:w-1/3 flex flex-col">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid grid-cols-4 mb-6">
                 <TabsTrigger value="page-settings" className="flex items-center justify-center">
@@ -51,19 +52,21 @@ const Index = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <div className="bg-white p-4 rounded-md border">
-                <TabsContent value="page-settings">
-                  <PageSettings />
-                </TabsContent>
-                <TabsContent value="print-marks">
-                  <PrintMarks />
-                </TabsContent>
-                <TabsContent value="color-settings">
-                  <ColorSettings />
-                </TabsContent>
-                <TabsContent value="export-options">
-                  <ExportOptions />
-                </TabsContent>
+              <div className="bg-white rounded-md border flex-grow overflow-hidden flex flex-col">
+                <ScrollArea className="flex-grow p-4 h-[calc(100vh-280px)]">
+                  <TabsContent value="page-settings" className="mt-0">
+                    <PageSettings />
+                  </TabsContent>
+                  <TabsContent value="print-marks" className="mt-0">
+                    <PrintMarks />
+                  </TabsContent>
+                  <TabsContent value="color-settings" className="mt-0">
+                    <ColorSettings />
+                  </TabsContent>
+                  <TabsContent value="export-options" className="mt-0">
+                    <ExportOptions />
+                  </TabsContent>
+                </ScrollArea>
               </div>
             </Tabs>
           </div>
