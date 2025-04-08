@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageSettings from "@/components/PageSettings";
 import PrintMarks from "@/components/PrintMarks";
@@ -7,7 +7,7 @@ import ColorSettings from "@/components/ColorSettings";
 import ExportOptions from "@/components/ExportOptions";
 import PreviewPanel from "@/components/PreviewPanel";
 import { PrintSettingsProvider } from "@/context/PrintSettingsContext";
-import { Printer, Layers, Palette, Download, UserCircle2 } from "lucide-react";
+import { Layers, Palette, Download, UserCircle2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import UserAccount from "@/components/UserAccount";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,29 @@ import { Button } from "@/components/ui/button";
 const Index = () => {
   const [activeTab, setActiveTab] = useState("page-settings");
   const [showUserAccount, setShowUserAccount] = useState(false);
+  const [panelHeight, setPanelHeight] = useState(0);
+  const previewPanelRef = useRef<HTMLDivElement>(null);
+
+  // Update panel height based on the preview panel
+  useEffect(() => {
+    const updateHeight = () => {
+      if (previewPanelRef.current) {
+        // Get the height of the preview panel and apply it to the left panel
+        const height = previewPanelRef.current.offsetHeight;
+        setPanelHeight(height);
+      }
+    };
+
+    // Set initial height
+    updateHeight();
+    
+    // Update height when window resizes
+    window.addEventListener('resize', updateHeight);
+    
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
 
   return (
     <PrintSettingsProvider>
@@ -78,7 +101,10 @@ const Index = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <div className="bg-white rounded-md border flex-grow overflow-hidden flex flex-col h-full">
+              <div 
+                className="bg-white rounded-md border flex-grow overflow-hidden flex flex-col"
+                style={{ height: panelHeight > 0 ? `${panelHeight}px` : 'auto' }}
+              >
                 <ScrollArea className="flex-grow p-4 h-full">
                   <TabsContent value="page-settings" className="mt-0 h-full">
                     <PageSettings />
@@ -97,7 +123,10 @@ const Index = () => {
             </Tabs>
           </div>
           
-          <div className="md:w-2/3 bg-white p-6 rounded-md border">
+          <div 
+            ref={previewPanelRef} 
+            className="md:w-2/3 bg-white p-6 rounded-md border"
+          >
             <h2 className="text-lg font-medium mb-4">Preview</h2>
             <PreviewPanel />
           </div>
