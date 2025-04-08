@@ -4,7 +4,15 @@ import React, { createContext, useContext, useState } from 'react';
 // Define types for our context
 export type PageSize = 'a4' | 'a3' | 'letter' | 'legal' | 'tabloid' | 'custom';
 export type PageOrientation = 'portrait' | 'landscape';
-export type ColorProfile = 'sRGB' | 'AdobeRGB' | 'CMYK' | 'ProPhoto';
+export type ColorProfile = 
+  // Standard profiles
+  'sRGB' | 'AdobeRGB' | 'CMYK' | 'ProPhoto' | 
+  // FOGRA profiles - coated
+  'FOGRA39' | 'FOGRA47' | 'FOGRA51' | 'FOGRA52' | 
+  // FOGRA profiles - uncoated
+  'FOGRA29' | 'FOGRA50' |
+  // Japan profiles
+  'TOYO' | 'JAPAN';
 export type BleedType = 'none' | 'standard' | 'custom';
 export type ExportType = 'full' | 'pages' | 'selection';
 
