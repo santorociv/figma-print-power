@@ -15,16 +15,16 @@ import { Button } from "@/components/ui/button";
 const Index = () => {
   const [activeTab, setActiveTab] = useState("create");
   const [showUserAccount, setShowUserAccount] = useState(false);
-  const [panelHeight, setPanelHeight] = useState(0);
-  const previewPanelRef = useRef<HTMLDivElement>(null);
+  const [containerHeight, setContainerHeight] = useState(0);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
 
-  // Update panel height based on the preview panel
+  // Update container height based on the preview panel container
   useEffect(() => {
     const updateHeight = () => {
-      if (previewPanelRef.current) {
-        // Get the height of the preview panel and apply it to the left panel
-        const height = previewPanelRef.current.offsetHeight;
-        setPanelHeight(height);
+      if (previewContainerRef.current) {
+        // Get the height of the preview panel container
+        const height = previewContainerRef.current.offsetHeight;
+        setContainerHeight(height);
       }
     };
 
@@ -78,7 +78,10 @@ const Index = () => {
         </header>
 
         <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-6 gap-6">
-          <div className="md:w-1/3 flex flex-col">
+          <div 
+            className="md:w-1/3 flex flex-col"
+            style={{ height: containerHeight > 0 ? `${containerHeight}px` : 'auto' }}
+          >
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full flex flex-col">
               <TabsList className="grid grid-cols-2 mb-6">
                 <TabsTrigger value="create" className="flex items-center justify-center">
@@ -91,10 +94,7 @@ const Index = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <div 
-                className="bg-white rounded-md border flex-grow overflow-hidden flex flex-col"
-                style={{ height: panelHeight > 0 ? `${panelHeight}px` : 'auto' }}
-              >
+              <div className="bg-white rounded-md border flex-grow overflow-hidden flex flex-col">
                 <ScrollArea className="flex-grow p-4 h-full">
                   <TabsContent value="create" className="mt-0 h-full space-y-8">
                     <PageSettings />
@@ -114,11 +114,13 @@ const Index = () => {
           </div>
           
           <div 
-            ref={previewPanelRef} 
-            className="md:w-2/3 bg-white p-6 rounded-md border"
+            ref={previewContainerRef} 
+            className="md:w-2/3"
           >
-            <h2 className="text-lg font-medium mb-4">Preview</h2>
-            <PreviewPanel />
+            <div className="bg-white p-6 rounded-md border h-full">
+              <h2 className="text-lg font-medium mb-4">Preview</h2>
+              <PreviewPanel />
+            </div>
           </div>
         </div>
 

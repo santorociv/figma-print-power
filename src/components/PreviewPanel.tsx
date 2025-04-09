@@ -26,7 +26,7 @@ const PreviewPanel = () => {
     const size = pageSizes[settings.pageSize];
     return settings.orientation === 'portrait'
       ? { width: size.width, height: size.height }
-      : { width: size.width, height: size.height };
+      : { width: size.height, height: size.width };
   };
   
   const dimensions = getPageDimensions();
