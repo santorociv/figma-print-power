@@ -22,7 +22,7 @@ const Index = () => {
   useEffect(() => {
     const updateHeight = () => {
       if (previewContainerRef.current) {
-        // Get the height of the preview panel container
+        // Get the height of the preview panel container and reduce it by half
         const height = previewContainerRef.current.offsetHeight;
         setContainerHeight(height);
       }
@@ -83,7 +83,7 @@ const Index = () => {
             style={{ height: containerHeight > 0 ? `${containerHeight}px` : 'auto' }}
           >
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full flex flex-col">
-              <TabsList className="grid grid-cols-2 mb-6">
+              <TabsList className="grid grid-cols-2 mb-4">
                 <TabsTrigger value="create" className="flex items-center justify-center">
                   <Layers className="h-4 w-4 mr-2" />
                   <span>Create</span>
@@ -97,15 +97,15 @@ const Index = () => {
               <div className="bg-white rounded-md border flex-grow overflow-hidden flex flex-col">
                 <ScrollArea className="flex-1">
                   <div className="p-4 pb-20">
-                    <TabsContent value="create" className="mt-0 space-y-8 m-0">
+                    <TabsContent value="create" className="mt-0 space-y-6 m-0">
                       <PageSettings />
-                      <div className="border-t pt-6">
+                      <div className="border-t pt-4">
                         <PrintMarks />
                       </div>
                     </TabsContent>
-                    <TabsContent value="export" className="mt-0 space-y-8 m-0">
+                    <TabsContent value="export" className="mt-0 space-y-6 m-0">
                       <ColorSettings />
-                      <div className="border-t pt-6">
+                      <div className="border-t pt-4">
                         <ExportOptions />
                       </div>
                     </TabsContent>
@@ -132,9 +132,9 @@ const Index = () => {
             ref={previewContainerRef} 
             className="md:w-2/3"
           >
-            <div className="bg-white rounded-md border p-6 h-full flex flex-col">
-              <h2 className="text-lg font-medium mb-4">Preview</h2>
-              <div className="flex-grow bg-gray-100 rounded-md" style={{ height: "400px" }}>
+            <div className="bg-white rounded-md border p-4 h-full flex flex-col">
+              <h2 className="text-lg font-medium mb-2">Preview</h2>
+              <div className="flex-grow bg-gray-100 rounded-md" style={{ height: "200px" }}>
                 <PreviewPanel />
               </div>
             </div>

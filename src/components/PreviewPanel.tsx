@@ -1,10 +1,12 @@
 
 import { useEffect, useState } from "react";
 import { usePrintSettings } from "@/context/PrintSettingsContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PreviewPanel = () => {
   const { settings } = usePrintSettings();
-  const [scale, setScale] = useState(0.5); // Scale for display purposes
+  const [scale, setScale] = useState(0.25); // Reduced scale for smaller height
+  const [isLoading, setIsLoading] = useState(true);
   
   // Calculate actual dimensions based on orientation and page size
   const getPageDimensions = () => {
@@ -33,6 +35,8 @@ const PreviewPanel = () => {
   
   // Auto-adjust scale based on container size
   useEffect(() => {
+    setIsLoading(true);
+    
     const handleResize = () => {
       // Get container dimensions
       const container = document.querySelector('.preview-container');
@@ -42,13 +46,15 @@ const PreviewPanel = () => {
       const containerHeight = container.clientHeight;
       
       // Calculate scale that would fit the page within the container
-      // with some padding
+      // with some padding, using a smaller maximum scale for reduced height
       const widthScale = (containerWidth - 40) / dimensions.width;
-      const heightScale = (containerHeight - 40) / dimensions.height;
+      const heightScale = (containerHeight - 20) / dimensions.height;
       
       // Use the smaller scale to ensure the page fits completely
-      const newScale = Math.min(widthScale, heightScale, 1);
+      // Limit the maximum scale to ensure the preview isn't too large
+      const newScale = Math.min(widthScale, heightScale, 0.5);
       setScale(newScale);
+      setIsLoading(false);
     };
     
     handleResize();
@@ -144,13 +150,21 @@ const PreviewPanel = () => {
     );
   };
 
+  if (isLoading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <Skeleton className="w-4/5 h-4/5" />
+      </div>
+    );
+  }
+
   return (
-    <div className="preview-container h-full flex items-center justify-center overflow-auto relative p-6">
+    <div className="preview-container h-full flex items-center justify-center overflow-auto relative p-2">
       <div className="relative" style={{ width: bleedWidth, height: bleedHeight }}>
         {/* Bleed Area */}
         {settings.showBleedMarks && (
           <div 
-            className="absolute border-2 border-dashed border-red-500" 
+            className="absolute border border-dashed border-red-500" 
             style={{ 
               left: 0, 
               top: 0, 
@@ -169,14 +183,14 @@ const PreviewPanel = () => {
             top: settings.showBleedMarks ? bleedSize * scale : 0, 
             width: displayWidth, 
             height: displayHeight,
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)' 
+            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' 
           }}
         >
           {/* Content placeholder */}
-          <div className="w-full h-full flex flex-col items-center justify-center text-center p-4">
-            <div className="w-4/5 h-1/4 bg-gray-200 mb-4 rounded"></div>
-            <div className="w-3/5 h-1/8 bg-gray-200 mb-2 rounded"></div>
-            <div className="w-2/3 h-1/8 bg-gray-200 mb-4 rounded"></div>
+          <div className="w-full h-full flex flex-col items-center justify-center text-center p-2">
+            <div className="w-4/5 h-1/4 bg-gray-200 mb-2 rounded"></div>
+            <div className="w-3/5 h-1/8 bg-gray-200 mb-1 rounded"></div>
+            <div className="w-2/3 h-1/8 bg-gray-200 mb-2 rounded"></div>
             <div className="w-3/4 h-1/3 bg-gray-200 rounded"></div>
           </div>
           
@@ -200,16 +214,13 @@ const PreviewPanel = () => {
       </div>
       
       {/* Info Overlay */}
-      <div className="absolute bottom-2 right-2 bg-white/80 backdrop-blur-sm p-2 rounded text-xs text-gray-600">
-        <div className="flex gap-4">
+      <div className="absolute bottom-1 right-1 bg-white/80 backdrop-blur-sm p-1 rounded text-xs text-gray-600">
+        <div className="flex gap-2">
           <div>
             <span className="font-medium">Size:</span> {dimensions.width} × {dimensions.height} mm
           </div>
           <div>
             <span className="font-medium">DPI:</span> {settings.dpi}
-          </div>
-          <div>
-            <span className="font-medium">Profile:</span> {settings.colorProfile}
           </div>
         </div>
       </div>
