@@ -7,13 +7,13 @@ import ColorSettings from "@/components/ColorSettings";
 import ExportOptions from "@/components/ExportOptions";
 import PreviewPanel from "@/components/PreviewPanel";
 import { PrintSettingsProvider } from "@/context/PrintSettingsContext";
-import { Layers, Palette, Download, UserCircle2 } from "lucide-react";
+import { Layers, Download, UserCircle2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import UserAccount from "@/components/UserAccount";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("page-settings");
+  const [activeTab, setActiveTab] = useState("create");
   const [showUserAccount, setShowUserAccount] = useState(false);
   const [panelHeight, setPanelHeight] = useState(0);
   const previewPanelRef = useRef<HTMLDivElement>(null);
@@ -80,24 +80,14 @@ const Index = () => {
         <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-6 gap-6">
           <div className="md:w-1/3 flex flex-col">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full flex flex-col">
-              <TabsList className="grid grid-cols-4 mb-6">
-                <TabsTrigger value="page-settings" className="flex items-center justify-center">
+              <TabsList className="grid grid-cols-2 mb-6">
+                <TabsTrigger value="create" className="flex items-center justify-center">
                   <Layers className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">Page</span>
+                  <span>Create</span>
                 </TabsTrigger>
-                <TabsTrigger value="print-marks" className="flex items-center justify-center">
-                  <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 3V6M3 3H6M3 3L8 8M3 21V18M3 21H6M3 21L8 16M21 3H18M21 3V6M21 3L16 8M21 21H18M21 21V18M21 21L16 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span className="hidden sm:inline">Marks</span>
-                </TabsTrigger>
-                <TabsTrigger value="color-settings" className="flex items-center justify-center">
-                  <Palette className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">Color</span>
-                </TabsTrigger>
-                <TabsTrigger value="export-options" className="flex items-center justify-center">
+                <TabsTrigger value="export" className="flex items-center justify-center">
                   <Download className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">Export</span>
+                  <span>Export</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -106,17 +96,17 @@ const Index = () => {
                 style={{ height: panelHeight > 0 ? `${panelHeight}px` : 'auto' }}
               >
                 <ScrollArea className="flex-grow p-4 h-full">
-                  <TabsContent value="page-settings" className="mt-0 h-full">
+                  <TabsContent value="create" className="mt-0 h-full space-y-8">
                     <PageSettings />
+                    <div className="border-t pt-6">
+                      <PrintMarks />
+                    </div>
                   </TabsContent>
-                  <TabsContent value="print-marks" className="mt-0 h-full">
-                    <PrintMarks />
-                  </TabsContent>
-                  <TabsContent value="color-settings" className="mt-0 h-full">
+                  <TabsContent value="export" className="mt-0 h-full space-y-8">
                     <ColorSettings />
-                  </TabsContent>
-                  <TabsContent value="export-options" className="mt-0 h-full">
-                    <ExportOptions />
+                    <div className="border-t pt-6">
+                      <ExportOptions />
+                    </div>
                   </TabsContent>
                 </ScrollArea>
               </div>
