@@ -117,9 +117,11 @@ const Index = () => {
             ref={previewContainerRef} 
             className="md:w-2/3"
           >
-            <div className="bg-white p-6 rounded-md border h-full">
+            <div className="bg-white rounded-md border p-6 h-full flex flex-col">
               <h2 className="text-lg font-medium mb-4">Preview</h2>
-              <PreviewPanel />
+              <div className="flex-grow bg-gray-100 rounded-md">
+                <PreviewPanel />
+              </div>
             </div>
           </div>
         </div>

@@ -145,7 +145,7 @@ const PreviewPanel = () => {
   };
 
   return (
-    <div className="preview-container h-[500px] flex items-center justify-center overflow-auto relative bg-gray-100">
+    <div className="preview-container h-full flex items-center justify-center overflow-auto relative p-6">
       <div className="relative" style={{ width: bleedWidth, height: bleedHeight }}>
         {/* Bleed Area */}
         {settings.showBleedMarks && (
