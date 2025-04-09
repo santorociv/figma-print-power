@@ -7,7 +7,7 @@ import ColorSettings from "@/components/ColorSettings";
 import ExportOptions from "@/components/ExportOptions";
 import PreviewPanel from "@/components/PreviewPanel";
 import { PrintSettingsProvider } from "@/context/PrintSettingsContext";
-import { Layers, Download, UserCircle2 } from "lucide-react";
+import { Layers, Download, UserCircle2, ArrowRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import UserAccount from "@/components/UserAccount";
 import { Button } from "@/components/ui/button";
@@ -95,20 +95,35 @@ const Index = () => {
               </TabsList>
 
               <div className="bg-white rounded-md border flex-grow overflow-hidden flex flex-col">
-                <ScrollArea className="flex-grow p-4 h-full">
-                  <TabsContent value="create" className="mt-0 h-full space-y-8">
-                    <PageSettings />
-                    <div className="border-t pt-6">
-                      <PrintMarks />
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="export" className="mt-0 h-full space-y-8">
-                    <ColorSettings />
-                    <div className="border-t pt-6">
-                      <ExportOptions />
-                    </div>
-                  </TabsContent>
+                <ScrollArea className="flex-1">
+                  <div className="p-4 pb-20">
+                    <TabsContent value="create" className="mt-0 space-y-8 m-0">
+                      <PageSettings />
+                      <div className="border-t pt-6">
+                        <PrintMarks />
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="export" className="mt-0 space-y-8 m-0">
+                      <ColorSettings />
+                      <div className="border-t pt-6">
+                        <ExportOptions />
+                      </div>
+                    </TabsContent>
+                  </div>
                 </ScrollArea>
+                <div className="border-t p-4 bg-white sticky bottom-0">
+                  {activeTab === "create" ? (
+                    <Button className="w-full" size="lg">
+                      <span>Create Frame in Figma</span>
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button className="w-full" size="lg">
+                      <Download className="mr-2 h-4 w-4" />
+                      <span>Export Files</span>
+                    </Button>
+                  )}
+                </div>
               </div>
             </Tabs>
           </div>
@@ -119,7 +134,7 @@ const Index = () => {
           >
             <div className="bg-white rounded-md border p-6 h-full flex flex-col">
               <h2 className="text-lg font-medium mb-4">Preview</h2>
-              <div className="flex-grow bg-gray-100 rounded-md">
+              <div className="flex-grow bg-gray-100 rounded-md" style={{ height: "400px" }}>
                 <PreviewPanel />
               </div>
             </div>
