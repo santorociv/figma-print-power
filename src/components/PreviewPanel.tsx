@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const PreviewPanel = () => {
   const { settings } = usePrintSettings();
-  const [scale, setScale] = useState(0.25); // Reduced scale for smaller height
+  const [scale, setScale] = useState(0.15); // Further reduced scale for smaller height
   const [isLoading, setIsLoading] = useState(true);
   
   // Calculate actual dimensions based on orientation and page size
@@ -51,8 +51,8 @@ const PreviewPanel = () => {
       const heightScale = (containerHeight - 20) / dimensions.height;
       
       // Use the smaller scale to ensure the page fits completely
-      // Limit the maximum scale to ensure the preview isn't too large
-      const newScale = Math.min(widthScale, heightScale, 0.5);
+      // Further limit the maximum scale to ensure the preview is compact
+      const newScale = Math.min(widthScale, heightScale, 0.3);
       setScale(newScale);
       setIsLoading(false);
     };

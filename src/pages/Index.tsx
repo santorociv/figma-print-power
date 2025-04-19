@@ -15,15 +15,15 @@ import { Button } from "@/components/ui/button";
 const Index = () => {
   const [activeTab, setActiveTab] = useState("create");
   const [showUserAccount, setShowUserAccount] = useState(false);
-  const [containerHeight, setContainerHeight] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(400); // Reduced default height
   const previewContainerRef = useRef<HTMLDivElement>(null);
 
   // Update container height based on the preview panel container
   useEffect(() => {
     const updateHeight = () => {
       if (previewContainerRef.current) {
-        // Get the height of the preview panel container and reduce it by half
-        const height = previewContainerRef.current.offsetHeight;
+        // Reduce the height to approximately half of the original
+        const height = Math.min(previewContainerRef.current.offsetHeight, 400);
         setContainerHeight(height);
       }
     };
@@ -131,10 +131,11 @@ const Index = () => {
           <div 
             ref={previewContainerRef} 
             className="md:w-2/3"
+            style={{ height: containerHeight > 0 ? `${containerHeight}px` : 'auto' }}
           >
             <div className="bg-white rounded-md border p-4 h-full flex flex-col">
               <h2 className="text-lg font-medium mb-2">Preview</h2>
-              <div className="flex-grow bg-gray-100 rounded-md" style={{ height: "200px" }}>
+              <div className="flex-grow bg-gray-100 rounded-md overflow-hidden">
                 <PreviewPanel />
               </div>
             </div>
