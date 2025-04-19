@@ -68,10 +68,13 @@ const Index = () => {
           </div>
         </header>
 
-        <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-6 gap-6">
+        <div 
+          className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-6 gap-6"
+          style={{ height: `calc(${containerHeight}px - 5rem)` }}
+        >
           <div 
             className="md:w-1/3 flex flex-col"
-            style={{ height: containerHeight > 0 ? `${containerHeight}px` : 'auto' }}
+            style={{ height: '100%' }}
           >
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full flex flex-col">
               <TabsList className="grid grid-cols-2 mb-4">
@@ -122,7 +125,7 @@ const Index = () => {
           <div 
             ref={previewContainerRef} 
             className="md:w-2/3"
-            style={{ height: containerHeight > 0 ? `${containerHeight}px` : 'auto' }}
+            style={{ height: '100%' }}
           >
             <div className="bg-white rounded-md border p-4 h-full flex flex-col">
               <h2 className="text-lg font-medium mb-2">Preview</h2>

@@ -1,7 +1,6 @@
+import { PrintSettings, PageSize } from "@/context/PrintSettingsContext";
 
-import { PrintSettingsState, PageSize } from "@/context/PrintSettingsContext";
-
-export const getPageDimensions = (settings: PrintSettingsState) => {
+export const getPageDimensions = (settings: PrintSettings) => {
   if (settings.pageSize === 'custom') {
     return settings.orientation === 'portrait'
       ? { width: settings.customWidth, height: settings.customHeight }
