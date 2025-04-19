@@ -14,18 +14,15 @@ import { Button } from "@/components/ui/button";
 const Index = () => {
   const [activeTab, setActiveTab] = useState("create");
   const [showUserAccount, setShowUserAccount] = useState(false);
-  const [containerHeight, setContainerHeight] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(window.innerHeight * 0.6);
   const previewContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateHeight = () => {
-      const windowHeight = window.innerHeight;
-      const responsiveHeight = Math.min(windowHeight * 0.6, 500);
-      setContainerHeight(responsiveHeight);
+      setContainerHeight(window.innerHeight * 0.6);
     };
 
     updateHeight();
-    
     window.addEventListener('resize', updateHeight);
     
     return () => {
