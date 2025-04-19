@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 import { usePrintSettings } from "@/context/PrintSettingsContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const PreviewPanel = () => {
+interface PreviewPanelProps {
+  activeTab: string;
+}
+
+const PreviewPanel = ({ activeTab }: PreviewPanelProps) => {
   const { settings } = usePrintSettings();
-  const [scale, setScale] = useState(0.15); // Further reduced scale for smaller height
+  const [scale, setScale] = useState(0.15);
   const [isLoading, setIsLoading] = useState(true);
+  const [figmaFrames, setFigmaFrames] = useState<any[]>([]);
   
   // Calculate actual dimensions based on orientation and page size
   const getPageDimensions = () => {
@@ -33,6 +38,19 @@ const PreviewPanel = () => {
   
   const dimensions = getPageDimensions();
   
+  // Mock function to get Figma frames (in a real implementation, this would use the Figma API)
+  useEffect(() => {
+    if (activeTab === "export") {
+      // Simulate fetching Figma frames
+      setTimeout(() => {
+        setFigmaFrames([
+          { id: 1, name: "Frame 1", width: 300, height: 200 },
+          { id: 2, name: "Frame 2", width: 400, height: 300 }
+        ]);
+      }, 800);
+    }
+  }, [activeTab]);
+  
   // Auto-adjust scale based on container size
   useEffect(() => {
     setIsLoading(true);
@@ -46,12 +64,11 @@ const PreviewPanel = () => {
       const containerHeight = container.clientHeight;
       
       // Calculate scale that would fit the page within the container
-      // with some padding, using a smaller maximum scale for reduced height
+      // with some padding
       const widthScale = (containerWidth - 40) / dimensions.width;
-      const heightScale = (containerHeight - 20) / dimensions.height;
+      const heightScale = (containerHeight - 40) / dimensions.height;
       
       // Use the smaller scale to ensure the page fits completely
-      // Further limit the maximum scale to ensure the preview is compact
       const newScale = Math.min(widthScale, heightScale, 0.3);
       setScale(newScale);
       setIsLoading(false);
@@ -60,7 +77,7 @@ const PreviewPanel = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [dimensions]);
+  }, [dimensions, activeTab]);
   
   // Calculate actual sizes for display
   const displayWidth = dimensions.width * scale;
@@ -154,6 +171,32 @@ const PreviewPanel = () => {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <Skeleton className="w-4/5 h-4/5" />
+      </div>
+    );
+  }
+
+  if (activeTab === "export") {
+    return (
+      <div className="preview-container h-full flex flex-col items-center justify-center overflow-auto p-4">
+        {figmaFrames.length > 0 ? (
+          <div className="space-y-4 w-full">
+            <p className="text-center text-sm text-gray-500 mb-2">Selected Figma Frames ({figmaFrames.length})</p>
+            {figmaFrames.map(frame => (
+              <div key={frame.id} className="border rounded p-3 bg-white flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">{frame.name}</h3>
+                  <p className="text-xs text-gray-500">{frame.width} × {frame.height} px</p>
+                </div>
+                <div className="h-12 w-12 bg-gray-200 rounded"></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center">
+            <p className="text-gray-500 mb-2">No Figma frames selected</p>
+            <p className="text-sm text-gray-400">Select frames in Figma to see them here</p>
+          </div>
+        )}
       </div>
     );
   }
