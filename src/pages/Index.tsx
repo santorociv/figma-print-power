@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageSettings from "@/components/PageSettings";
@@ -10,6 +11,7 @@ import { Layers, Download, UserCircle2, ArrowRight } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import UserAccount from "@/components/UserAccount";
 import { Button } from "@/components/ui/button";
+import DpiSelector from "@/components/DpiSelector";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("create");

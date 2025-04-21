@@ -1,4 +1,13 @@
-import { PrintSettings, PageSize } from "@/context/PrintSettingsContext";
+
+import type { PageSize } from "@/context/PrintSettingsContext";
+
+// Define the interface locally to avoid circular dependencies
+interface PrintSettings {
+  pageSize: PageSize;
+  orientation: 'portrait' | 'landscape';
+  customWidth: number;
+  customHeight: number;
+}
 
 export const getPageDimensions = (settings: PrintSettings) => {
   if (settings.pageSize === 'custom') {
