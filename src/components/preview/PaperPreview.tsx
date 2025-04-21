@@ -1,3 +1,4 @@
+
 import { usePrintSettings } from "@/context/PrintSettingsContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPageDimensions } from "@/utils/paperUtils";
@@ -94,18 +95,33 @@ const PaperPreview = ({ scale, isLoading }: PaperPreviewProps) => {
       </div>
       
       {/* Info Overlay */}
-      <div className="absolute bottom-1 right-1 bg-white/80 backdrop-blur-sm p-1 rounded text-xs text-gray-600" 
+      <div className="absolute bottom-1 left-1 bg-white/90 backdrop-blur-sm p-2 rounded text-xs border border-gray-200 shadow-sm" 
         style={{
-          fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
-          maxWidth: "98vw",
+          fontSize: "clamp(0.7rem, 1.2vw, 0.9rem)",
+          maxWidth: "98%",
           overflowWrap: "anywhere"
         }}>
-        <div className="flex gap-2 flex-wrap">
-          <div>
-            <span className="font-medium">Size:</span> {dimensions.width} × {dimensions.height} mm
+        <div className="flex flex-col gap-1">
+          <div className="font-medium text-gray-700">
+            {settings.pageSize.toUpperCase()} {settings.orientation} • {dimensions.width} × {dimensions.height} mm
           </div>
-          <div>
-            <span className="font-medium">DPI:</span> {settings.dpi}
+          <div className="flex gap-2 text-gray-600 flex-wrap">
+            <div>
+              <span className="font-medium">DPI:</span> {settings.dpi}
+            </div>
+            <div>
+              <span className="font-medium">Profile:</span> {settings.colorProfile}
+            </div>
+            {settings.showBleedMarks && (
+              <div>
+                <span className="font-medium">Bleed:</span> {bleedSize}mm
+              </div>
+            )}
+            {settings.showSafeArea && (
+              <div>
+                <span className="font-medium">Safe Area:</span> {settings.safeAreaSize}mm
+              </div>
+            )}
           </div>
         </div>
       </div>

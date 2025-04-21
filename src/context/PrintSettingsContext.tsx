@@ -8,11 +8,13 @@ export type ColorProfile =
   // Standard profiles
   'sRGB' | 'AdobeRGB' | 'CMYK' | 'ProPhoto' | 
   // FOGRA profiles - coated
-  'FOGRA39' | 'FOGRA47' | 'FOGRA51' | 'FOGRA52' | 
+  'FOGRA39' | 'FOGRA51' | 'FOGRA28' |
   // FOGRA profiles - uncoated
-  'FOGRA29' | 'FOGRA50' |
+  'FOGRA47' | 'FOGRA52' | 'FOGRA29' |
   // Japan profiles
-  'TOYO' | 'JAPAN';
+  'TOYO' | 'JAPAN' | 'JAPAN_UNCOATED' |
+  // American profiles
+  'SWOP' | 'GRACoL' | 'SNAP';
 export type BleedType = 'none' | 'standard' | 'custom';
 export type ExportType = 'full' | 'pages' | 'selection';
 

@@ -7,6 +7,8 @@ interface PrintSettings {
   orientation: 'portrait' | 'landscape';
   customWidth: number;
   customHeight: number;
+  colorProfile?: string;
+  dpi?: number;
 }
 
 export const getPageDimensions = (settings: PrintSettings) => {
@@ -30,4 +32,19 @@ export const getPageDimensions = (settings: PrintSettings) => {
   return settings.orientation === 'portrait'
     ? { width: size.width, height: size.height }
     : { width: size.height, height: size.width };
+};
+
+// Helper function to get size in pixels based on DPI
+export const getSizeInPixels = (settings: PrintSettings) => {
+  const dimensions = getPageDimensions(settings);
+  const dpi = settings.dpi || 300;
+  
+  // Convert mm to inches, then multiply by DPI
+  const widthInInches = dimensions.width / 25.4;
+  const heightInInches = dimensions.height / 25.4;
+  
+  return {
+    width: Math.round(widthInInches * dpi),
+    height: Math.round(heightInInches * dpi)
+  };
 };
