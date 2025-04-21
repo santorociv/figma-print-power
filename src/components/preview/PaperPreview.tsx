@@ -1,4 +1,3 @@
-
 import { usePrintSettings } from "@/context/PrintSettingsContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPageDimensions } from "@/utils/paperUtils";
@@ -95,8 +94,13 @@ const PaperPreview = ({ scale, isLoading }: PaperPreviewProps) => {
       </div>
       
       {/* Info Overlay */}
-      <div className="absolute bottom-1 right-1 bg-white/80 backdrop-blur-sm p-1 rounded text-xs text-gray-600">
-        <div className="flex gap-2">
+      <div className="absolute bottom-1 right-1 bg-white/80 backdrop-blur-sm p-1 rounded text-xs text-gray-600" 
+        style={{
+          fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
+          maxWidth: "98vw",
+          overflowWrap: "anywhere"
+        }}>
+        <div className="flex gap-2 flex-wrap">
           <div>
             <span className="font-medium">Size:</span> {dimensions.width} × {dimensions.height} mm
           </div>
